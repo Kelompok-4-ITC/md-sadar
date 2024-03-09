@@ -53,6 +53,57 @@ class LoginPage extends StatelessWidget {
               height: 48,
             ),
             const _LoginForm(),
+            const SizedBox(
+              height: 40,
+            ),
+            SizedBox(
+              height: 48,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFA2A2A7),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4)),
+                ),
+                onPressed: () {},
+                child: const Text(
+                  'Login',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Tidak punya akun?',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'Sign up',
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+                )
+              ],
+            )
           ],
         ),
       ),
@@ -71,6 +122,7 @@ class _LoginFormState extends State<_LoginForm> {
   _LoginFormState();
 
   bool _isVisible = false;
+  bool _isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +144,32 @@ class _LoginFormState extends State<_LoginForm> {
           decoration: _decorationForm(true,
               label: 'Password', hint: 'Masukkan password anda'),
         ),
+        const SizedBox(
+          height: 24,
+        ),
+        Row(
+          children: [
+            Checkbox(
+              value: _isChecked,
+              onChanged: (value) {
+                setState(() {
+                  _isChecked = !_isChecked;
+                });
+              },
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            const Text(
+              'Remember me',
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            )
+          ],
+        )
       ],
     );
   }
@@ -108,9 +186,11 @@ class _LoginFormState extends State<_LoginForm> {
       suffixIcon: isPass
           ? InkWell(
               onTap: () {
-                setState(() {
-                  _isVisible = !_isVisible;
-                });
+                setState(
+                  () {
+                    _isVisible = !_isVisible;
+                  },
+                );
               },
               child: Icon(
                 _isVisible ? Icons.visibility_off : Icons.visibility,

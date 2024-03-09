@@ -103,6 +103,67 @@ class LoginPage extends StatelessWidget {
                   ),
                 )
               ],
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 0.5,
+                  width: MediaQuery.of(context).size.width > 100
+                      ? 1 / 4 * MediaQuery.of(context).size.width - 30
+                      : 30,
+                  child: Container(
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width > 100
+                      ? 1 / 2 * MediaQuery.of(context).size.width - 30
+                      : 40,
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: Text(
+                      'Atau Sign Up dengan',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 0.5,
+                  width: MediaQuery.of(context).size.width > 100
+                      ? 1 / 4 * MediaQuery.of(context).size.width - 30
+                      : 30,
+                  child: Container(
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            SizedBox(
+              height: 56,
+              child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      side: const BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                  child: Image.asset(
+                    'images/google.png',
+                    height: 24,
+                    width: 24,
+                  )),
             )
           ],
         ),

@@ -98,7 +98,7 @@ class LoginPage extends StatelessWidget {
                       fontFamily: 'Montserrat',
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: Colors.black,
+                      color: Color(0xFFEB5757),
                     ),
                   ),
                 )
@@ -126,7 +126,7 @@ class LoginPage extends StatelessWidget {
                   child: const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
-                      'Atau Sign Up dengan',
+                      'Atau Login dengan',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: 'Montserrat',
@@ -164,6 +164,26 @@ class LoginPage extends StatelessWidget {
                     height: 24,
                     width: 24,
                   )),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            InkWell(
+              onTap: () {},
+              focusColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              child: const Text(
+                'Login sebagai tamu',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 14,
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
             )
           ],
         ),

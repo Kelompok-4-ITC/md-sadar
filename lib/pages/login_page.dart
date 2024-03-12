@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sadar_app/pages/register_page.dart';
+import 'package:sadar_app/routes/route_name.dart';
 
 class _LoginVariable {
   static var usernameController = TextEditingController();
@@ -93,11 +93,9 @@ class LoginPage extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => const RegisterPage(),
-                      ),
+                      RouteNames.register,
                     );
                   },
                   child: const Text(

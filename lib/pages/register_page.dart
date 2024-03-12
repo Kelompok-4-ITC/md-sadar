@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:sadar_app/pages/register_page.dart';
 
-class _LoginVariable {
+class _RegisterVariable {
   static var usernameController = TextEditingController();
+  static var emailController = TextEditingController();
   static var passwordController = TextEditingController();
+  static var noHpController = TextEditingController();
 }
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +17,37 @@ class LoginPage extends StatelessWidget {
         padding: const EdgeInsets.all(30),
         child: ListView(
           children: [
+            Container(
+              alignment: Alignment.topLeft,
+              decoration: const BoxDecoration(shape: BoxShape.circle),
+              child: Material(
+                color: const Color(0xFF3D9970),
+                shape: const CircleBorder(),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  customBorder: const CircleBorder(),
+                  child: Ink(
+                    decoration: const BoxDecoration(shape: BoxShape.circle),
+                    height: 42,
+                    width: 42,
+                    child: const Icon(Icons.arrow_back),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
             const Text(
-              'Login',
+              'Register',
               style: TextStyle(
                 fontFamily: 'Montserrat',
                 fontSize: 40,
                 fontWeight: FontWeight.w600,
+                color: Colors.black,
+                decoration: TextDecoration.none,
               ),
             ),
             const SizedBox(
@@ -36,7 +62,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 children: [
                   TextSpan(
-                    text: 'Login untuk mengakses akun ',
+                    text: 'Buat akun ',
                   ),
                   TextSpan(
                     text: 'Sadar',
@@ -51,11 +77,11 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 48,
+              height: 16,
             ),
-            const _LoginForm(),
+            const _RegisterForm(),
             const SizedBox(
-              height: 40,
+              height: 30,
             ),
             SizedBox(
               height: 48,
@@ -67,7 +93,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 onPressed: () {},
                 child: const Text(
-                  'Login',
+                  'Register',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 14,
@@ -84,7 +110,7 @@ class LoginPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  'Tidak punya akun?',
+                  'Sudah punya akun?',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 14,
@@ -93,15 +119,10 @@ class LoginPage extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const RegisterPage(),
-                      ),
-                    );
+                    Navigator.pop(context);
                   },
                   child: const Text(
-                    'Sign up',
+                    'Log In',
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 14,
@@ -109,11 +130,11 @@ class LoginPage extends StatelessWidget {
                       color: Color(0xFFEB5757),
                     ),
                   ),
-                )
+                ),
               ],
             ),
             const SizedBox(
-              height: 40,
+              height: 30,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -134,7 +155,7 @@ class LoginPage extends StatelessWidget {
                   child: const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
-                      'Atau Login dengan',
+                      'Atau Sign Up dengan',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: 'Montserrat',
@@ -155,7 +176,7 @@ class LoginPage extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 40,
+              height: 30,
             ),
             SizedBox(
               height: 56,
@@ -174,26 +195,6 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 40,
-            ),
-            InkWell(
-              onTap: () {},
-              focusColor: Colors.transparent,
-              hoverColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              child: const Text(
-                'Login sebagai tamu',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 14,
-                  color: Colors.blue,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-            )
           ],
         ),
       ),
@@ -201,16 +202,14 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class _LoginForm extends StatefulWidget {
-  const _LoginForm({super.key});
+class _RegisterForm extends StatefulWidget {
+  const _RegisterForm({super.key});
 
   @override
-  State<_LoginForm> createState() => _LoginFormState();
+  State<_RegisterForm> createState() => _RegisterFormState();
 }
 
-class _LoginFormState extends State<_LoginForm> {
-  _LoginFormState();
-
+class _RegisterFormState extends State<_RegisterForm> {
   bool _isVisible = false;
   bool _isChecked = false;
 
@@ -219,23 +218,43 @@ class _LoginFormState extends State<_LoginForm> {
     return Column(
       children: [
         TextField(
-          controller: _LoginVariable.usernameController,
+          controller: _RegisterVariable.usernameController,
           textInputAction: TextInputAction.next,
           decoration: _decorationForm(false,
               label: 'Username', hint: 'Masukkan username anda'),
         ),
         const SizedBox(
-          height: 24,
+          height: 20,
         ),
         TextField(
-          controller: _LoginVariable.passwordController,
-          textInputAction: TextInputAction.done,
+          controller: _RegisterVariable.emailController,
+          textInputAction: TextInputAction.next,
+          keyboardType: TextInputType.emailAddress,
+          decoration: _decorationForm(false,
+              label: 'Email', hint: 'Masukkan email anda'),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        TextField(
+          controller: _RegisterVariable.passwordController,
+          textInputAction: TextInputAction.next,
           obscureText: !_isVisible,
           decoration: _decorationForm(true,
               label: 'Password', hint: 'Masukkan password anda'),
         ),
         const SizedBox(
-          height: 24,
+          height: 20,
+        ),
+        TextField(
+          controller: _RegisterVariable.noHpController,
+          textInputAction: TextInputAction.done,
+          keyboardType: TextInputType.number,
+          decoration: _decorationForm(false,
+              label: 'Nomor HP', hint: 'Masukkan nomor hp anda'),
+        ),
+        const SizedBox(
+          height: 20,
         ),
         Row(
           children: [

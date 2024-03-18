@@ -175,23 +175,6 @@ class LoginPage extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
-            InkWell(
-              onTap: () {},
-              focusColor: Colors.transparent,
-              hoverColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              child: const Text(
-                'Login sebagai tamu',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 14,
-                  color: Colors.blue,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-            )
           ],
         ),
       ),

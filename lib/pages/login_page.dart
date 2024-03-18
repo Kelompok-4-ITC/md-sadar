@@ -55,29 +55,6 @@ class LoginPage extends StatelessWidget {
             ),
             const _LoginForm(),
             const SizedBox(
-              height: 40,
-            ),
-            SizedBox(
-              height: 48,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFA2A2A7),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4)),
-                ),
-                onPressed: () {},
-                child: const Text(
-                  'Login',
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
               height: 16,
             ),
             Row(
@@ -194,6 +171,8 @@ class _LoginFormState extends State<_LoginForm> {
 
   bool _isVisible = false;
   bool _isChecked = false;
+  bool _validateUname = false;
+  bool _validatePass = false;
 
   @override
   Widget build(BuildContext context) {
@@ -202,8 +181,10 @@ class _LoginFormState extends State<_LoginForm> {
         TextField(
           controller: _LoginVariable.usernameController,
           textInputAction: TextInputAction.next,
-          decoration: _decorationForm(false,
-              label: 'Username', hint: 'Masukkan username anda'),
+          decoration: _decorationForm(false, _validateUname,
+              label: 'Username',
+              hint: 'Masukkan username anda',
+              errorMessage: "Username tidak boleh kosong!"),
         ),
         const SizedBox(
           height: 24,
@@ -212,8 +193,10 @@ class _LoginFormState extends State<_LoginForm> {
           controller: _LoginVariable.passwordController,
           textInputAction: TextInputAction.done,
           obscureText: !_isVisible,
-          decoration: _decorationForm(true,
-              label: 'Password', hint: 'Masukkan password anda'),
+          decoration: _decorationForm(true, _validatePass,
+              label: 'Password',
+              hint: 'Masukkan password anda',
+              errorMessage: "Password tidak boleh kosong!"),
         ),
         const SizedBox(
           height: 24,
@@ -240,14 +223,47 @@ class _LoginFormState extends State<_LoginForm> {
               ),
             )
           ],
-        )
+        ),
+        const SizedBox(
+          height: 40,
+        ),
+        SizedBox(
+          height: 48,
+          width: MediaQuery.of(context).size.width,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFA2A2A7),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4)),
+            ),
+            onPressed: () {
+              setState(() {
+                _validateUname = _LoginVariable.usernameController.text.isEmpty;
+                _validatePass = _LoginVariable.passwordController.text.isEmpty;
+                print("$_validateUname $_validatePass");
+              });
+            },
+            child: const Text(
+              'Login',
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  InputDecoration _decorationForm(bool isPass,
-      {String label = 'Username', String hint = 'Masukkan username anda'}) {
+  InputDecoration _decorationForm(bool isPass, bool validation,
+      {String label = 'Username',
+      String hint = 'Masukkan username anda',
+      String errorMessage = 'Tidak dapat membaca inputan'}) {
     return InputDecoration(
+      errorText: validation ? errorMessage : null,
       border: const OutlineInputBorder(),
       labelText: label,
       hintText: hint,

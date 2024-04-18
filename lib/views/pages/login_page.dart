@@ -6,12 +6,13 @@ import 'package:sadar_app/routes/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class _LoginVariable {
-  static TextStyle _mainText(double? size) {
+  static TextStyle _mainText(double? size,
+      {Color color = const Color(0xFF112211)}) {
     return TextStyle(
       fontFamily: 'Montserrat',
       fontSize: size,
       fontWeight: FontWeight.w500,
-      color: const Color(0xFF112211),
+      color: color,
     );
   }
 }
@@ -38,21 +39,23 @@ class LoginPage extends StatelessWidget {
               height: 16,
             ),
             RichText(
-              text: TextSpan(
-                style: const TextStyle(
+              text: const TextSpan(
+                style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
-                  color: Color(0xFF112211),
                 ),
                 children: [
-                  const TextSpan(
+                  TextSpan(
                     text: 'Login untuk mengakses akun ',
                   ),
                   TextSpan(
                     text: 'Sadar',
-                    style: _LoginVariable._mainText(16),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF297754),
+                    ),
                   ),
-                  const TextSpan(
+                  TextSpan(
                     text: ' Anda.',
                   ),
                 ],
@@ -166,19 +169,109 @@ class _LoginForm extends StatefulWidget {
   const _LoginForm({super.key});
 
   @override
-  State<_LoginForm> createState() => _LoginFormState();
+  State<_LoginForm> createState() => __LoginFormState();
 }
 
-class _LoginFormState extends State<_LoginForm> {
-  static final _usernameController = TextEditingController();
-  static final _passwordController = TextEditingController();
-
+class __LoginFormState extends State<_LoginForm> {
   bool _isVisible = false;
   bool _isChecked = false;
+
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   bool _validateUname = false;
   bool _validatePass = false;
+
   String _uNameErrorMessage = '';
   String _passErrorMessage = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          controller: _usernameController,
+          textInputAction: TextInputAction.next,
+          decoration: _decorationForm(false, _validateUname,
+              label: 'Username',
+              hint: 'Masukkan username anda',
+              errorMessage: _uNameErrorMessage),
+        ),
+        const SizedBox(
+          height: 24,
+        ),
+        TextField(
+          controller: _passwordController,
+          textInputAction: TextInputAction.done,
+          obscureText: !_isVisible,
+          decoration: _decorationForm(true, _validatePass,
+              label: 'Password',
+              hint: 'Masukkan password anda',
+              errorMessage: _passErrorMessage),
+        ),
+        const SizedBox(
+          height: 24,
+        ),
+        Row(
+          children: [
+            Checkbox(
+              activeColor: const Color(0xFF54BB8D),
+              value: _isChecked,
+              onChanged: (value) {
+                setState(() {
+                  _isChecked = !_isChecked;
+                });
+              },
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            Text(
+              'Remember me',
+              style: _LoginVariable._mainText(14),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 40,
+        ),
+        SizedBox(
+          height: 48,
+          width: MediaQuery.of(context).size.width,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF54BB8D),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4)),
+            ),
+            onPressed: () {
+              setState(() {
+                _validateUname = _usernameController.text.isEmpty;
+                _validatePass = _passwordController.text.isEmpty;
+
+                _passErrorMessage =
+                    _validatePass ? "Password tidak boleh kosong!" : "";
+                _uNameErrorMessage =
+                    _validateUname ? "Username tidak boleh kosong!" : "";
+
+                if (!_validatePass && !_validateUname) {
+                  _loginProcess(
+                      _usernameController.text, _passwordController.text);
+                }
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+              child: Text(
+                'Login',
+                style: _LoginVariable._mainText(14, color: Colors.white),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   void _loginProcess(String uName, String pass) async {
     //Data Post
@@ -238,90 +331,6 @@ class _LoginFormState extends State<_LoginForm> {
               ),
             )
           : null,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(
-          controller: _usernameController,
-          textInputAction: TextInputAction.next,
-          decoration: _decorationForm(false, _validateUname,
-              label: 'Username',
-              hint: 'Masukkan username anda',
-              errorMessage: _uNameErrorMessage),
-        ),
-        const SizedBox(
-          height: 24,
-        ),
-        TextField(
-          controller: _passwordController,
-          textInputAction: TextInputAction.done,
-          obscureText: !_isVisible,
-          decoration: _decorationForm(true, _validatePass,
-              label: 'Password',
-              hint: 'Masukkan password anda',
-              errorMessage: _passErrorMessage),
-        ),
-        const SizedBox(
-          height: 24,
-        ),
-        Row(
-          children: [
-            Checkbox(
-              value: _isChecked,
-              onChanged: (value) {
-                setState(() {
-                  _isChecked = !_isChecked;
-                });
-              },
-            ),
-            const SizedBox(
-              width: 8,
-            ),
-            Text(
-              'Remember me',
-              style: _LoginVariable._mainText(14),
-            )
-          ],
-        ),
-        const SizedBox(
-          height: 40,
-        ),
-        SizedBox(
-          height: 48,
-          width: MediaQuery.of(context).size.width,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFA2A2A7),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4)),
-            ),
-            onPressed: () {
-              setState(() {
-                _validateUname = _usernameController.text.isEmpty;
-                _validatePass = _passwordController.text.isEmpty;
-
-                _passErrorMessage =
-                    _validatePass ? "Password tidak boleh kosong!" : "";
-                _uNameErrorMessage =
-                    _validateUname ? "Username tidak boleh kosong!" : "";
-
-                if (!_validatePass && !_validateUname) {
-                  _loginProcess(
-                      _usernameController.text, _passwordController.text);
-                }
-              });
-            },
-            child: Text(
-              'Login',
-              style: _LoginVariable._mainText(14),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

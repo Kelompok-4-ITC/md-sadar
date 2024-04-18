@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sadar_app/pages/home_page.dart';
-import 'package:sadar_app/pages/login_page.dart';
-import 'package:sadar_app/pages/register_page.dart';
+import 'package:sadar_app/views/pages/home_page.dart';
+import 'package:sadar_app/views/pages/login_page.dart';
+import 'package:sadar_app/views/pages/register_page.dart';
 import 'package:sadar_app/routes/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

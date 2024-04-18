@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:sadar_app/views/pages/second_register_page.dart';
 
 class _RegisterVariable {
-  static var usernameController = TextEditingController();
-  static var emailController = TextEditingController();
-  static var passwordController = TextEditingController();
-  static var noHpController = TextEditingController();
+  static TextStyle _mainText(double? size,
+      {Color color = const Color(0xFF112211),
+      FontWeight fontWeight = FontWeight.w500}) {
+    return TextStyle(
+      fontFamily: 'Montserrat',
+      fontSize: size,
+      fontWeight: fontWeight,
+      color: color,
+    );
+  }
 }
 
 class RegisterPage extends StatelessWidget {
@@ -21,7 +28,7 @@ class RegisterPage extends StatelessWidget {
               alignment: Alignment.topLeft,
               decoration: const BoxDecoration(shape: BoxShape.circle),
               child: Material(
-                color: const Color(0xFF3D9970),
+                color: const Color(0xFF54BB8D),
                 shape: const CircleBorder(),
                 child: InkWell(
                   onTap: () {
@@ -32,7 +39,11 @@ class RegisterPage extends StatelessWidget {
                     decoration: const BoxDecoration(shape: BoxShape.circle),
                     height: 42,
                     width: 42,
-                    child: const Icon(Icons.arrow_back),
+                    child: const Icon(
+                      size: 38,
+                      Icons.keyboard_arrow_left,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -40,14 +51,12 @@ class RegisterPage extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            const Text(
+            Text(
               'Register',
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 40,
+              style: _RegisterVariable._mainText(
+                40,
                 fontWeight: FontWeight.w600,
                 color: Colors.black,
-                decoration: TextDecoration.none,
               ),
             ),
             const SizedBox(
@@ -58,7 +67,6 @@ class RegisterPage extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
-                  color: Color(0xFF112211),
                 ),
                 children: [
                   TextSpan(
@@ -68,6 +76,7 @@ class RegisterPage extends StatelessWidget {
                     text: 'Sadar',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
+                      color: Color(0xFF297754),
                     ),
                   ),
                   TextSpan(
@@ -81,53 +90,25 @@ class RegisterPage extends StatelessWidget {
             ),
             const _RegisterForm(),
             const SizedBox(
-              height: 30,
-            ),
-            SizedBox(
-              height: 48,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFA2A2A7),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4)),
-                ),
-                onPressed: () {},
-                child: const Text(
-                  'Register',
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
               height: 16,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   'Sudah punya akun?',
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: _RegisterVariable._mainText(14),
                 ),
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text(
+                  child: Text(
                     'Log In',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 14,
+                    style: _RegisterVariable._mainText(
+                      14,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFFEB5757),
+                      color: const Color(0xFFEB5757),
                     ),
                   ),
                 ),
@@ -152,15 +133,12 @@ class RegisterPage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width > 100
                       ? 1 / 2 * MediaQuery.of(context).size.width - 30
                       : 40,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
                       'Atau Sign Up dengan',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 14,
-                      ),
+                      style: _RegisterVariable._mainText(14),
                     ),
                   ),
                 ),
@@ -206,87 +184,127 @@ class _RegisterForm extends StatefulWidget {
   const _RegisterForm({super.key});
 
   @override
-  State<_RegisterForm> createState() => _RegisterFormState();
+  State<_RegisterForm> createState() => __RegisterFormState();
 }
 
-class _RegisterFormState extends State<_RegisterForm> {
+class __RegisterFormState extends State<_RegisterForm> {
   bool _isVisible = false;
-  bool _isChecked = false;
+
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  bool _validateUname = false;
+  bool _validateEmail = false;
+  bool _validatePass = false;
+
+  String message = 'Data wajib diisi!';
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         TextField(
-          controller: _RegisterVariable.usernameController,
+          controller: _usernameController,
           textInputAction: TextInputAction.next,
-          decoration: _decorationForm(false,
-              label: 'Username', hint: 'Masukkan username anda'),
+          decoration: _decorationForm(
+            false,
+            _validateUname,
+            label: 'Username',
+            hint: 'Masukkan username anda',
+            errorMessage: message,
+          ),
         ),
         const SizedBox(
           height: 20,
         ),
         TextField(
-          controller: _RegisterVariable.emailController,
+          controller: _emailController,
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.emailAddress,
-          decoration: _decorationForm(false,
-              label: 'Email', hint: 'Masukkan email anda'),
+          decoration: _decorationForm(
+            false,
+            _validateEmail,
+            label: 'Email',
+            hint: 'Masukkan email anda',
+            errorMessage: message,
+          ),
         ),
         const SizedBox(
           height: 20,
         ),
         TextField(
-          controller: _RegisterVariable.passwordController,
+          controller: _passwordController,
           textInputAction: TextInputAction.next,
           obscureText: !_isVisible,
-          decoration: _decorationForm(true,
-              label: 'Password', hint: 'Masukkan password anda'),
+          decoration: _decorationForm(
+            true,
+            _validatePass,
+            label: 'Password',
+            hint: 'Masukkan password anda',
+            errorMessage: message,
+          ),
         ),
         const SizedBox(
           height: 20,
         ),
-        TextField(
-          controller: _RegisterVariable.noHpController,
-          textInputAction: TextInputAction.done,
-          keyboardType: TextInputType.number,
-          decoration: _decorationForm(false,
-              label: 'Nomor HP', hint: 'Masukkan nomor hp anda'),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Row(
-          children: [
-            Checkbox(
-              value: _isChecked,
-              onChanged: (value) {
-                setState(() {
-                  _isChecked = !_isChecked;
-                });
-              },
+        SizedBox(
+          height: 48,
+          width: MediaQuery.of(context).size.width,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF54BB8D),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4)),
             ),
-            const SizedBox(
-              width: 8,
+            onPressed: () {
+              setState(() {
+                _validateUname = _usernameController.text.isEmpty;
+                _validateEmail = _emailController.text.isEmpty;
+                _validatePass = _passwordController.text.isEmpty;
+
+                if (_validateEmail || _validatePass || _validateUname) {
+                  message = 'Data wajib diisi!';
+                } else if (!_emailController.text.contains('@')) {
+                  _validateEmail = true;
+                  message = 'Tidak dapat membaca email';
+                } else if (_passwordController.text.length < 5) {
+                  _validatePass = true;
+                  message = 'Password harus memiliki minimal 5 karakter';
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SecondRegister(
+                        uName: _usernameController.text,
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      ),
+                    ),
+                  );
+                }
+              });
+            },
+            child: Text(
+              'Lanjut',
+              style: _RegisterVariable._mainText(14, color: Colors.white),
             ),
-            const Text(
-              'Remember me',
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            )
-          ],
-        )
+          ),
+        ),
       ],
     );
   }
 
-  InputDecoration _decorationForm(bool isPass,
-      {String label = 'Username', String hint = 'Masukkan username anda'}) {
+  InputDecoration _decorationForm(
+    bool isPass,
+    bool validation, {
+    String label = 'Username',
+    String hint = 'Masukkan username anda',
+    String errorMessage = 'Data wajib diisi!',
+  }) {
     return InputDecoration(
       border: const OutlineInputBorder(),
+      errorText: validation ? errorMessage : null,
       labelText: label,
       hintText: hint,
       hintStyle: const TextStyle(

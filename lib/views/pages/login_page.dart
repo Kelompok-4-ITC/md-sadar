@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sadar_app/services/services.dart';
 import 'package:sadar_app/routes/route_name.dart';
+import 'package:sadar_app/views/widget/text_field_form.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class _LoginVariable {
@@ -43,6 +44,7 @@ class LoginPage extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
+                  color: Colors.black,
                 ),
                 children: [
                   TextSpan(
@@ -176,38 +178,46 @@ class __LoginFormState extends State<_LoginForm> {
   bool _isVisible = false;
   bool _isChecked = false;
 
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-
   bool _validateUname = false;
   bool _validatePass = false;
 
-  String _uNameErrorMessage = '';
-  String _passErrorMessage = '';
+  final _uNameTextField = CustomTextVield(
+    textAction: TextInputAction.next,
+    label: 'Username',
+    hint: 'Masukkan username anda',
+  );
+  final _passTextField = CustomTextVield(
+    textAction: TextInputAction.done,
+    label: 'Password',
+    hint: 'Masukkan password anda',
+  );
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(
-          controller: _usernameController,
-          textInputAction: TextInputAction.next,
-          decoration: _decorationForm(false, _validateUname,
-              label: 'Username',
-              hint: 'Masukkan username anda',
-              errorMessage: _uNameErrorMessage),
+        _uNameTextField.generateNormalWidget(
+          validation: _validateUname,
         ),
         const SizedBox(
           height: 24,
         ),
-        TextField(
-          controller: _passwordController,
-          textInputAction: TextInputAction.done,
-          obscureText: !_isVisible,
-          decoration: _decorationForm(true, _validatePass,
-              label: 'Password',
-              hint: 'Masukkan password anda',
-              errorMessage: _passErrorMessage),
+        _passTextField.generatePasswordWidget(
+          validation: _validatePass,
+          isHide: !_isVisible,
+          suffixIcon: InkWell(
+            onTap: () {
+              setState(
+                () {
+                  _isVisible = !_isVisible;
+                },
+              );
+            },
+            child: Icon(
+              _isVisible ? Icons.visibility_off : Icons.visibility,
+              color: const Color(0xFF112211),
+            ),
+          ),
         ),
         const SizedBox(
           height: 24,
@@ -246,17 +256,15 @@ class __LoginFormState extends State<_LoginForm> {
             ),
             onPressed: () {
               setState(() {
-                _validateUname = _usernameController.text.isEmpty;
-                _validatePass = _passwordController.text.isEmpty;
+                _validateUname = _uNameTextField.getController.text.isEmpty;
+                _validatePass = _passTextField.getController.text.isEmpty;
 
-                _passErrorMessage =
-                    _validatePass ? "Password tidak boleh kosong!" : "";
-                _uNameErrorMessage =
-                    _validateUname ? "Username tidak boleh kosong!" : "";
+                _passTextField.setErrorMessage("Password tidak boleh kosong!");
+                _uNameTextField.setErrorMessage("Username tidak boleh kosong!");
 
                 if (!_validatePass && !_validateUname) {
-                  _loginProcess(
-                      _usernameController.text, _passwordController.text);
+                  _loginProcess(_uNameTextField.getController.text,
+                      _passTextField.getController.text);
                 }
               });
             },
@@ -295,42 +303,9 @@ class __LoginFormState extends State<_LoginForm> {
     } else {
       _validatePass = true;
       _validateUname = true;
-      _uNameErrorMessage = body['message'];
-      _passErrorMessage = body['message'];
+      _uNameTextField.setErrorMessage(body['message']);
+      _passTextField.setErrorMessage(body['message']);
     }
     setState(() {});
-  }
-
-  InputDecoration _decorationForm(
-    bool isPass,
-    bool validation, {
-    String label = 'Username',
-    String hint = 'Masukkan username anda',
-    String errorMessage = 'Tidak dapat membaca inputan',
-  }) {
-    return InputDecoration(
-      errorText: validation ? errorMessage : null,
-      border: const OutlineInputBorder(),
-      labelText: label,
-      hintText: hint,
-      hintStyle: const TextStyle(
-        fontWeight: FontWeight.normal,
-      ),
-      suffixIcon: isPass
-          ? InkWell(
-              onTap: () {
-                setState(
-                  () {
-                    _isVisible = !_isVisible;
-                  },
-                );
-              },
-              child: Icon(
-                _isVisible ? Icons.visibility_off : Icons.visibility,
-                color: const Color(0xFF112211),
-              ),
-            )
-          : null,
-    );
   }
 }

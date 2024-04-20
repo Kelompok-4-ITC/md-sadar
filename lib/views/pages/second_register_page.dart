@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sadar_app/routes/route_name.dart';
 import 'package:sadar_app/services/services.dart';
+import 'package:sadar_app/views/widget/text_field_form.dart';
 import 'package:sadar_app/views/widget/toggle_button.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -116,15 +117,31 @@ class _SecondRegisterForm extends StatefulWidget {
 class __SecondRegisterFormState extends State<_SecondRegisterForm> {
   bool _isChecked = false;
 
-  final _fullNameController = TextEditingController();
-  final _birthDateController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
-
-  final List<String> _dataRole = ['Customer', 'Driver'];
-
   bool _validateFullName = false;
   bool _validateBirthDate = false;
   bool _validatePhoneNumber = false;
+
+  final _fullNameTextField = CustomTextVield(
+    textAction: TextInputAction.next,
+    textType: TextInputType.name,
+    label: 'Nama Lengkap',
+    hint: 'Masukkan nama lengkap,',
+  );
+  final _birthDayTextField = CustomTextVield(
+    label: 'Tanggal lahir',
+    suffixIcon: const Icon(
+      Icons.calendar_today_outlined,
+      color: Color(0xFF112211),
+    ),
+  );
+  final _phoneTextField = CustomTextVield(
+    textAction: TextInputAction.done,
+    textType: TextInputType.phone,
+    label: 'Nomor Handphone',
+    hint: 'Masukkan nomor handphone',
+  );
+
+  final List<String> _dataRole = ['Customer', 'Driver'];
 
   String message = '';
   String role = 'Customer';
@@ -134,28 +151,21 @@ class __SecondRegisterFormState extends State<_SecondRegisterForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextField(
-          controller: _fullNameController,
-          textInputAction: TextInputAction.next,
-          decoration: _decorationForm(
-            _validateFullName,
-            label: 'Nama Lengkap',
-            hint: 'Masukkan nama lengkap',
-            errorMessage: message,
-          ),
+        _fullNameTextField.generateNormalWidget(
+          validation: _validateFullName,
         ),
         const SizedBox(
           height: 24,
         ),
-        TextField(
-          controller: _birthDateController,
-          readOnly: true,
+        _birthDayTextField.generateReadOnlyWidget(
+          validation: _validateBirthDate,
           onTap: () async {
             DateTime? pickedDate = await showDatePicker(
               context: context,
-              initialDate: _birthDateController.text.isEmpty
+              initialDate: _birthDayTextField.getController.text.isEmpty
                   ? DateTime.now()
-                  : DateFormat('yyyy-MM-dd').parse(_birthDateController.text),
+                  : DateFormat('yyyy-MM-dd')
+                      .parse(_birthDayTextField.getController.text),
               firstDate: DateTime(DateTime.now().year - 100),
               lastDate: DateTime.now(),
             );
@@ -163,34 +173,16 @@ class __SecondRegisterFormState extends State<_SecondRegisterForm> {
               String formattedDate =
                   DateFormat('yyyy-MM-dd').format(pickedDate);
               setState(() {
-                _birthDateController.text = formattedDate;
+                _birthDayTextField.getController.text = formattedDate;
               });
             }
           },
-          textInputAction: TextInputAction.done,
-          decoration: _decorationForm(
-            _validateBirthDate,
-            label: 'Tanggal Lahir',
-            suffixIcon: const Icon(
-              Icons.calendar_today_outlined,
-              color: Color(0xFF112211),
-            ),
-            errorMessage: message,
-          ),
         ),
         const SizedBox(
           height: 24,
         ),
-        TextField(
-          controller: _phoneNumberController,
-          textInputAction: TextInputAction.done,
-          keyboardType: TextInputType.phone,
-          decoration: _decorationForm(
-            _validatePhoneNumber,
-            label: 'Nomor Handphone',
-            hint: 'Masukkan nomor handphone',
-            errorMessage: message,
-          ),
+        _phoneTextField.generateNormalWidget(
+          validation: _validatePhoneNumber,
         ),
         const SizedBox(
           height: 24,
@@ -230,9 +222,13 @@ class __SecondRegisterFormState extends State<_SecondRegisterForm> {
             const SizedBox(
               width: 8,
             ),
-            Text(
-              'Saya setuju dengan syarat dan ketentuan',
-              style: _SecondRegisterVariable._mainText(14),
+            SizedBox(
+              width: MediaQuery.of(context).size.width - 120,
+              child: Text(
+                'Saya setuju dengan syarat dan ketentuan',
+                style: _SecondRegisterVariable._mainText(14),
+                maxLines: 2,
+              ),
             ),
           ],
         ),
@@ -250,26 +246,32 @@ class __SecondRegisterFormState extends State<_SecondRegisterForm> {
             ),
             onPressed: () {
               setState(() {
-                _validateFullName = _fullNameController.text.isEmpty;
-                _validateBirthDate = _birthDateController.text.isEmpty;
-                _validatePhoneNumber = _phoneNumberController.text.isEmpty;
+                _validateFullName =
+                    _fullNameTextField.getController.text.isEmpty;
+                _validateBirthDate =
+                    _birthDayTextField.getController.text.isEmpty;
+                _validatePhoneNumber =
+                    _phoneTextField.getController.text.isEmpty;
 
                 if (_validateFullName ||
                     _validateBirthDate ||
                     _validatePhoneNumber) {
-                  message = 'Data wajib diisi!';
-                } else if (_phoneNumberController.text.length < 10) {
+                  _fullNameTextField.setErrorMessage('Data wajib diisi!');
+                  _birthDayTextField.setErrorMessage('Data wajib diisi!');
+                  _phoneTextField.setErrorMessage('Data wajib diisi!');
+                } else if (_phoneTextField.getController.text.length < 10) {
                   _validatePhoneNumber = true;
-                  message = 'Nomor HP Anda tidak valid. Mohon cek kembali';
+                  _phoneTextField.setErrorMessage(
+                      'Nomor HP Anda tidak valid. Mohon cek kembali');
                 } else {
                   _registerProcess(
                     widget.uName,
                     widget.email,
                     widget.password,
                     role,
-                    _fullNameController.text,
-                    _birthDateController.text,
-                    _phoneNumberController.text,
+                    _fullNameTextField.getController.text,
+                    _birthDayTextField.getController.text,
+                    _phoneTextField.getController.text,
                   );
                 }
               });
@@ -301,9 +303,6 @@ class __SecondRegisterFormState extends State<_SecondRegisterForm> {
     var res = await Services().auth(data, '/register');
     var body = json.decode(res.body);
     var status = res.statusCode;
-
-    print(status);
-    print(body);
 
     //Check Response
     if (status >= 200 && status < 300) {
@@ -337,22 +336,5 @@ class __SecondRegisterFormState extends State<_SecondRegisterForm> {
       );
     }
     setState(() {});
-  }
-
-  InputDecoration _decorationForm(bool validation,
-      {String label = 'Username',
-      String hint = '',
-      Icon? suffixIcon,
-      String errorMessage = 'Data wajib diisi!'}) {
-    return InputDecoration(
-      errorText: validation ? errorMessage : null,
-      border: const OutlineInputBorder(),
-      labelText: label,
-      hintText: hint,
-      hintStyle: const TextStyle(
-        fontWeight: FontWeight.normal,
-      ),
-      suffixIcon: suffixIcon,
-    );
   }
 }

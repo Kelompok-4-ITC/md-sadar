@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:sadar_app/views/pages/home_page.dart';
+import 'package:sadar_app/views/pages/main_page.dart';
 import 'package:sadar_app/views/pages/login_page.dart';
 import 'package:sadar_app/views/pages/register_page.dart';
 import 'package:sadar_app/routes/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(const GetMaterialApp(home: MyApp()));
+  runApp(const MaterialApp(home: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
       routes: {
         RouteNames.login: (context) => const LoginPage(),
         RouteNames.register: (context) => const RegisterPage(),
-        RouteNames.home: (context) => const HomePage(),
+        RouteNames.home: (context) => const MainPage(),
       },
       home: const CheckAuth(),
     );
@@ -61,7 +60,7 @@ class _CheckAuthState extends State<CheckAuth> {
   Widget build(BuildContext context) {
     Widget child;
     if(isAuth){
-      child = const HomePage();
+      child = const MainPage();
     }else{
       child = const LoginPage();
     }

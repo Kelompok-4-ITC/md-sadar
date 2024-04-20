@@ -24,8 +24,6 @@ class Services {
 
   _setHeaders() => {
         'Content-type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
       };
 
   getData(apiURL) async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sadar_app/views/pages/second_register_page.dart';
+import 'package:sadar_app/views/widget/text_field_form.dart';
 
 class _RegisterVariable {
   static TextStyle _mainText(double? size,
@@ -67,6 +68,7 @@ class RegisterPage extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
+                  color: Colors.black,
                 ),
                 children: [
                   TextSpan(
@@ -190,59 +192,58 @@ class _RegisterForm extends StatefulWidget {
 class __RegisterFormState extends State<_RegisterForm> {
   bool _isVisible = false;
 
-  final _usernameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
   bool _validateUname = false;
   bool _validateEmail = false;
   bool _validatePass = false;
 
-  String message = 'Data wajib diisi!';
+  final _usernameTextField = CustomTextVield(
+    textAction: TextInputAction.next,
+    label: 'Username',
+    hint: 'Masukkan username anda',
+  );
+  final _emailTextField = CustomTextVield(
+    textAction: TextInputAction.next,
+    textType: TextInputType.emailAddress,
+    label: 'Email',
+    hint: 'Masukkan email anda',
+  );
+  final _passTextField = CustomTextVield(
+    textAction: TextInputAction.done,
+    label: 'Password',
+    hint: 'Masukkan password anda',
+  );
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(
-          controller: _usernameController,
-          textInputAction: TextInputAction.next,
-          decoration: _decorationForm(
-            false,
-            _validateUname,
-            label: 'Username',
-            hint: 'Masukkan username anda',
-            errorMessage: message,
-          ),
+        _usernameTextField.generateNormalWidget(
+          validation: _validateUname,
         ),
         const SizedBox(
           height: 20,
         ),
-        TextField(
-          controller: _emailController,
-          textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.emailAddress,
-          decoration: _decorationForm(
-            false,
-            _validateEmail,
-            label: 'Email',
-            hint: 'Masukkan email anda',
-            errorMessage: message,
-          ),
+        _emailTextField.generateNormalWidget(
+          validation: _validateEmail,
         ),
         const SizedBox(
           height: 20,
         ),
-        TextField(
-          controller: _passwordController,
-          textInputAction: TextInputAction.next,
-          obscureText: !_isVisible,
-          decoration: _decorationForm(
-            true,
-            _validatePass,
-            label: 'Password',
-            hint: 'Masukkan password anda',
-            errorMessage: message,
+        _passTextField.generatePasswordWidget(
+          validation: _validatePass,
+          isHide: !_isVisible,
+          suffixIcon: InkWell(
+            onTap: () {
+              setState(
+                () {
+                  _isVisible = !_isVisible;
+                },
+              );
+            },
+            child: Icon(
+              _isVisible ? Icons.visibility_off : Icons.visibility,
+              color: const Color(0xFF112211),
+            ),
           ),
         ),
         const SizedBox(
@@ -259,26 +260,29 @@ class __RegisterFormState extends State<_RegisterForm> {
             ),
             onPressed: () {
               setState(() {
-                _validateUname = _usernameController.text.isEmpty;
-                _validateEmail = _emailController.text.isEmpty;
-                _validatePass = _passwordController.text.isEmpty;
+                _validateUname = _usernameTextField.getController.text.isEmpty;
+                _validateEmail = _emailTextField.getController.text.isEmpty;
+                _validatePass = _passTextField.getController.text.isEmpty;
 
                 if (_validateEmail || _validatePass || _validateUname) {
-                  message = 'Data wajib diisi!';
-                } else if (!_emailController.text.contains('@')) {
+                  _usernameTextField.setErrorMessage('Data wajib diisi!');
+                  _emailTextField.setErrorMessage('Data wajib diisi!');
+                  _passTextField.setErrorMessage('Data wajib diisi!');
+                } else if (!_emailTextField.getController.text.contains('@')) {
                   _validateEmail = true;
-                  message = 'Tidak dapat membaca email';
-                } else if (_passwordController.text.length < 5) {
+                  _emailTextField.setErrorMessage('Tidak dapat membaca email');
+                } else if (_passTextField.getController.text.length < 5) {
                   _validatePass = true;
-                  message = 'Password harus memiliki minimal 5 karakter';
+                  _passTextField.setErrorMessage(
+                      'Password harus memiliki minimal 5 karakter');
                 } else {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => SecondRegister(
-                        uName: _usernameController.text,
-                        email: _emailController.text,
-                        password: _passwordController.text,
+                        uName: _usernameTextField.getController.text,
+                        email: _emailTextField.getController.text,
+                        password: _passTextField.getController.text,
                       ),
                     ),
                   );
@@ -292,39 +296,6 @@ class __RegisterFormState extends State<_RegisterForm> {
           ),
         ),
       ],
-    );
-  }
-
-  InputDecoration _decorationForm(
-    bool isPass,
-    bool validation, {
-    String label = 'Username',
-    String hint = 'Masukkan username anda',
-    String errorMessage = 'Data wajib diisi!',
-  }) {
-    return InputDecoration(
-      border: const OutlineInputBorder(),
-      errorText: validation ? errorMessage : null,
-      labelText: label,
-      hintText: hint,
-      hintStyle: const TextStyle(
-        fontWeight: FontWeight.normal,
-      ),
-      suffixIcon: isPass
-          ? InkWell(
-              onTap: () {
-                setState(
-                  () {
-                    _isVisible = !_isVisible;
-                  },
-                );
-              },
-              child: Icon(
-                _isVisible ? Icons.visibility_off : Icons.visibility,
-                color: const Color(0xFF112211),
-              ),
-            )
-          : null,
     );
   }
 }

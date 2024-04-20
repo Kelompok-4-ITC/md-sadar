@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class AnimatedToggle extends StatefulWidget {
   final List<String> values;
@@ -24,7 +23,7 @@ class _AnimatedToggleState extends State<AnimatedToggle> {
   bool initialPosition = true;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Stack(
         children: <Widget>[
@@ -53,7 +52,8 @@ class _AnimatedToggleState extends State<AnimatedToggle> {
                 children: List.generate(
                   widget.values.length,
                   (index) => Padding(
-                    padding: EdgeInsets.symmetric(horizontal: Get.width * 0.05),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.05),
                     child: Text(
                       widget.values[index],
                       style: const TextStyle(

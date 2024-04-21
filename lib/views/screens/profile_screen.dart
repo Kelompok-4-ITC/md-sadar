@@ -168,51 +168,52 @@ class ProfileScreen extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                  padding: const EdgeInsets.only(
-                    top: 10,
-                    left: 10,
-                    right: 10,
-                  ),
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      _listButton(
-                        context: context,
-                        logoIcon: Icons.newspaper,
-                        info: 'Informasi Personal',
-                      ),
-                      const SizedBox(height: 15),
-                      _listButton(
-                        context: context,
-                        logoIcon: Icons.history,
-                        info: 'Riwayat Transaksi',
-                      ),
-                      const SizedBox(height: 15),
-                      _listButton(
-                        context: context,
-                        logoIcon: Icons.question_answer_rounded,
-                        info: 'Pertanyaan dan Bantuan',
-                      ),
-                      const SizedBox(height: 15),
-                      _listButton(
-                        context: context,
-                        logoIcon: Icons.star,
-                        info: 'Pencapaian',
-                      ),
-                      const SizedBox(height: 15),
-                      _listButton(
-                        context: context,
-                        logoIcon: Icons.settings,
-                        info: 'Pengaturan',
-                      ),
-                      const SizedBox(height: 15),
-                      _listButton(
-                        context: context,
-                        logoIcon: Icons.logout,
-                        info: 'Logout',
-                      ),
-                    ],
-                  )),
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  left: 10,
+                  right: 10,
+                ),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    _listButton(
+                      context: context,
+                      logoIcon: Icons.newspaper,
+                      info: 'Informasi Personal',
+                    ),
+                    const SizedBox(height: 15),
+                    _listButton(
+                      context: context,
+                      logoIcon: Icons.history,
+                      info: 'Riwayat Transaksi',
+                    ),
+                    const SizedBox(height: 15),
+                    _listButton(
+                      context: context,
+                      logoIcon: Icons.question_answer_rounded,
+                      info: 'Pertanyaan dan Bantuan',
+                    ),
+                    const SizedBox(height: 15),
+                    _listButton(
+                      context: context,
+                      logoIcon: Icons.star,
+                      info: 'Pencapaian',
+                    ),
+                    const SizedBox(height: 15),
+                    _listButton(
+                      context: context,
+                      logoIcon: Icons.settings,
+                      info: 'Pengaturan',
+                    ),
+                    const SizedBox(height: 15),
+                    _listButton(
+                      context: context,
+                      logoIcon: Icons.logout,
+                      info: 'Logout',
+                    ),
+                  ],
+                ),
+              ),
             )
           ],
         ),

@@ -56,7 +56,7 @@ class _MainPageState extends State<MainPage> {
           )
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: /*const Color(0xFF79747E)*/Colors.black,
+        selectedItemColor: Colors.black,
         onTap: (value) {
           setState(() {
             _selectedIndex = value;

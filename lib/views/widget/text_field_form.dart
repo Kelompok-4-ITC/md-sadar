@@ -45,10 +45,11 @@ class CustomTextVield {
     );
   }
 
-  Widget generatePasswordWidget(
-      {required Widget suffixIcon,
-      required bool isHide,
-      required bool validation}) {
+  Widget generatePasswordWidget({
+    required Widget suffixIcon,
+    required bool isHide,
+    required bool validation,
+  }) {
     return TextField(
       controller: _controller,
       textInputAction: _textAction,
@@ -66,8 +67,10 @@ class CustomTextVield {
     );
   }
 
-  Widget generateReadOnlyWidget(
-      {required bool validation, required Function() onTap}) {
+  Widget generateReadOnlyWidget({
+    required bool validation,
+    required Function() onTap,
+  }) {
     return TextField(
       controller: _controller,
       readOnly: true,

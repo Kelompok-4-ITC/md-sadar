@@ -6,7 +6,10 @@ import 'package:sadar_app/routes/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(const MaterialApp(home: MyApp()));
+  runApp(const MaterialApp(
+    home: MyApp(),
+    debugShowCheckedModeBanner: false,
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -59,9 +62,9 @@ class _CheckAuthState extends State<CheckAuth> {
   @override
   Widget build(BuildContext context) {
     Widget child;
-    if(isAuth){
+    if (isAuth) {
       child = const MainPage();
-    }else{
+    } else {
       child = const LoginPage();
     }
     return child;

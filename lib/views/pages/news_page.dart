@@ -1,32 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:sadar_app/views/widget/scaffold_custom.dart';
 
 class NewsPage extends StatelessWidget {
   const NewsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.keyboard_arrow_left,
-            size: 35,
-          ),
-        ),
-        title: const Text(
-          'Berita',
-          style: TextStyle(
-            fontFamily: 'Montserrat',
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: Padding(
+    return CustomScaffold.defaultScaffold(
+      context: context,
+      label: 'Berita',
+      content: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 10,

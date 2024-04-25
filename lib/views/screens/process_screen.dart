@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sadar_app/views/pages/history_detail_page.dart';
 
 class ProcessScreen extends StatelessWidget {
   const ProcessScreen({super.key});
@@ -57,7 +58,8 @@ class ProcessScreen extends StatelessWidget {
             const SizedBox(height: 20),
             Expanded(
               child: ScrollConfiguration(
-                behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                behavior:
+                    ScrollConfiguration.of(context).copyWith(scrollbars: false),
                 child: ListView(
                   children: [
                     Container(
@@ -96,13 +98,33 @@ class ProcessScreen extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 10),
-                          _listContent(code: 'ABC123', status: 'PICK UP'),
+                          _listContent(
+                            context: context,
+                            code: 'ABC123',
+                            status: 'PICK UP',
+                            isPickUp: true,
+                          ),
                           const SizedBox(height: 10),
-                          _listContent(code: 'ABC456', status: 'DROP OFF'),
+                          _listContent(
+                            context: context,
+                            code: 'ABC456',
+                            status: 'DROP OFF',
+                            isPickUp: false,
+                          ),
                           const SizedBox(height: 10),
-                          _listContent(code: 'ABC789', status: 'PICK UP'),
+                          _listContent(
+                            context: context,
+                            code: 'ABC789',
+                            status: 'PICK UP',
+                            isPickUp: true,
+                          ),
                           const SizedBox(height: 10),
-                          _listContent(code: 'EFG012', status: 'PICK UP'),
+                          _listContent(
+                            context: context,
+                            code: 'EFG012',
+                            status: 'PICK UP',
+                            isPickUp: true,
+                          ),
                         ],
                       ),
                     )
@@ -139,52 +161,66 @@ class ProcessScreen extends StatelessWidget {
     );
   }
 
-  Widget _listContent({required String code, required String status}) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
+  Widget _listContent({
+    required BuildContext context,
+    required String code,
+    required String status,
+    required bool isPickUp,
+  }) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HistoryDetailPage(
+              isPickUp: isPickUp,
             ),
-            color: const Color(0xFF54BB8D),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.25),
-                blurRadius: 4,
-                offset: const Offset(-2, 0), // Shadow position
-              ),
-            ],
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Kode Pemesanan',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Montserrat',
-                    ),
-                  ),
-                  Text(
-                    code,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat',
-                    ),
-                  ),
-                ],
+        );
+      },
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
               ),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
+              color: const Color(0xFF54BB8D),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.25),
+                  blurRadius: 4,
+                  offset: const Offset(-2, 0), // Shadow position
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Kode Pemesanan',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Montserrat',
+                      ),
+                    ),
+                    Text(
+                      code,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat',
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 13,
                     vertical: 8,
@@ -201,57 +237,57 @@ class ProcessScreen extends StatelessWidget {
                         fontFamily: 'Montserrat',
                         color: Color(0xFF2AB445)),
                   ),
-                ),
-              )
-            ],
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 20,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10),
+                )
+              ],
             ),
-            color: const Color(0xFFF3FFFA),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.25),
-                blurRadius: 3,
-                offset: const Offset(-2, 1), // Shadow position
-              ),
-            ],
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 50,
-                height: 50,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    'https://static.vecteezy.com/system/resources/previews/004/581/260/non_2x/truck-delivery-icon-transportation-automotive-shipping-moving-and-freight-illustration-design-free-vector.jpg',
-                    fit: BoxFit.fill,
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 20,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10),
+              ),
+              color: const Color(0xFFF3FFFA),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.25),
+                  blurRadius: 3,
+                  offset: const Offset(-2, 1), // Shadow position
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      'https://static.vecteezy.com/system/resources/previews/004/581/260/non_2x/truck-delivery-icon-transportation-automotive-shipping-moving-and-freight-illustration-design-free-vector.jpg',
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              Text(
-                status,
-                style: const TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat',
-                ),
-              )
-            ],
+                const SizedBox(width: 10),
+                Text(
+                  status,
+                  style: const TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

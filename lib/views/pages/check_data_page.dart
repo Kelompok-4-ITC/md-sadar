@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sadar_app/models/barang_bekas_model.dart';
+import 'package:sadar_app/models/sampah_daur_ulang_model.dart';
+import 'package:sadar_app/views/pages/finish_process_page.dart';
 import 'package:sadar_app/views/widget/card_data_barang_component.dart';
 import 'package:sadar_app/views/widget/scaffold_custom.dart';
 
@@ -73,23 +76,17 @@ class CheckDataPage extends StatelessWidget {
                   color: Colors.black,
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  'Total Barang : 2 Barang',
-                  style: TextStyle(
+                Text(
+                  'Total Barang : ${SampahDaurUlangModel.itemDaurUlang.length} Barang',
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Montserrat',
                   ),
                 ),
                 const SizedBox(height: 10),
-                const ListBarangBekasCard(
-                  isCheckPage: true,
-                ),
-                const SizedBox(height: 10),
-                const ListBarangBekasCard(
-                  isCheckPage: true,
-                ),
-                const SizedBox(height: 15),
+                _listDataSampahDaurUlang(),
+                const SizedBox(height: 5),
                 const Text(
                   'List Barang Bekas',
                   style: TextStyle(
@@ -99,13 +96,20 @@ class CheckDataPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 5),
-                CardDataBarangComponent.listBarangBekas(isCheckedPage: true),
-                const SizedBox(height: 10),
-                CardDataBarangComponent.listBarangBekas(isCheckedPage: true),
-                const SizedBox(height: 15),
+                _listDataBarangBekas(),
+                const SizedBox(height: 5),
                 Material(
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FinishProcessPage(
+                            title: isPickUp ? 'Pick Up' : 'Drop Off',
+                          ),
+                        ),
+                      );
+                    },
                     customBorder: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -136,6 +140,46 @@ class CheckDataPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _listDataSampahDaurUlang() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: List.generate(
+        SampahDaurUlangModel.itemDaurUlang.length,
+        (index) {
+          return Column(
+            children: [
+              ListSampahDaurUlangCard(
+                index: index,
+                isCheckPage: true,
+              ),
+              const SizedBox(height: 10),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _listDataBarangBekas() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: List.generate(
+        BarangBekasModel.itemDaurUlang.length,
+        (index) {
+          return Column(
+            children: [
+              ListBarangBekasCard(
+                index: index,
+                isCheckedPage: true,
+              ),
+              const SizedBox(height: 10),
+            ],
+          );
+        },
       ),
     );
   }

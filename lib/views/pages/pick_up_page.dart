@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sadar_app/models/barang_bekas_model.dart';
 import 'package:sadar_app/models/sampah_daur_ulang_model.dart';
 import 'package:sadar_app/views/pages/check_data_page.dart';
 import 'package:sadar_app/views/widget/card_data_barang_component.dart';
@@ -59,16 +60,8 @@ class PickUpPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                CardDataBarangComponent.listBarangBekas(
-                  isCheckedPage: false,
-                  isFirstItem: false,
-                ),
-                const SizedBox(height: 15),
-                CardDataBarangComponent.listBarangBekas(
-                  isCheckedPage: false,
-                  isFirstItem: false,
-                ),
-                const SizedBox(height: 15),
+                const _CardBarangBekas(),
+                const SizedBox(height: 5),
                 Material(
                   child: InkWell(
                     onTap: () {
@@ -124,46 +117,105 @@ class _CardSampahDaurUlang extends StatefulWidget {
 }
 
 class __CardSampahDaurUlangState extends State<_CardSampahDaurUlang> {
-  final List<SampahDaurUlangModel> _itemDaurUlang = [
-    SampahDaurUlangModel(
-      kategoriSampah: '1',
-      detailSampah: '1',
-    ),
-  ];
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: List.generate(_itemDaurUlang.length, (index) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ListBarangBekasCard(
-              title: index.toString(),
-              isCheckPage: false,
-              isFirstItem: _itemDaurUlang.length == 1,
-              addMore: () {
-                setState(() {
-                  _itemDaurUlang.add(
-                    SampahDaurUlangModel(
-                      kategoriSampah: '$index',
-                      detailSampah: '$index',
-                    ),
-                  );
-                });
-              },
-              delete: () {
-                setState(() {
-                  _itemDaurUlang.remove(
-                    _itemDaurUlang.elementAt(index),
-                  );
-                });
-              },
-            ),
-            const SizedBox(height: 15),
-          ],
-        );
-      }),
+      children: List.generate(
+        SampahDaurUlangModel.itemDaurUlang.length,
+        (index) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ListSampahDaurUlangCard(
+                isCheckPage: false,
+                index: index,
+                onChanged: (value) {
+                  SampahDaurUlangModel.itemDaurUlang[index].detailSampah =
+                      value;
+                },
+                addMore: () {
+                  setState(() {
+                    FocusScope.of(context).unfocus();
+                    SampahDaurUlangModel.itemDaurUlang.add(
+                      SampahDaurUlangModel(
+                        kategoriSampah: 'Pilih Kategori Sampah',
+                        detailSampah: '',
+                      ),
+                    );
+                  });
+                },
+                delete: () {
+                  setState(() {
+                    FocusScope.of(context).unfocus();
+                    SampahDaurUlangModel.itemDaurUlang.removeAt(index);
+                  });
+                },
+              ),
+              const SizedBox(height: 15),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _CardBarangBekas extends StatefulWidget {
+  const _CardBarangBekas({super.key});
+
+  @override
+  State<_CardBarangBekas> createState() => __CardBarangBekasState();
+}
+
+class __CardBarangBekasState extends State<_CardBarangBekas> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: List.generate(
+        BarangBekasModel.itemDaurUlang.length,
+        (index) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ListBarangBekasCard(
+                isCheckedPage: false,
+                index: index,
+                onChangedName: (value) {
+                  BarangBekasModel.itemDaurUlang[index].namaBarang = value;
+                },
+                onChangedPrice: (value) {
+                  BarangBekasModel.itemDaurUlang[index].hargaJual =
+                      double.parse(value);
+                },
+                onChangedDesc: (value) {
+                  BarangBekasModel.itemDaurUlang[index].descBarang = value;
+                },
+                addMore: () {
+                  setState(() {
+                    FocusScope.of(context).unfocus();
+                    BarangBekasModel.itemDaurUlang.add(
+                      BarangBekasModel(
+                        namaBarang: '',
+                        hargaJual: 0,
+                        descBarang: '',
+                      ),
+                    );
+                  });
+                },
+                delete: () {
+                  setState(() {
+                    FocusScope.of(context).unfocus();
+                    BarangBekasModel.itemDaurUlang.removeAt(index);
+                  });
+                },
+              ),
+              const SizedBox(height: 10),
+            ],
+          );
+        },
+      ),
     );
   }
 }

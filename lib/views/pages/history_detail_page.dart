@@ -135,12 +135,12 @@ class HistoryDetailPage extends StatelessWidget {
               color: Colors.black,
             ),
             const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
+            const Padding(
+              padding: EdgeInsets.all(5.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Total Barang : 2 Barang',
                     style: TextStyle(
                       fontSize: 18,
@@ -148,16 +148,16 @@ class HistoryDetailPage extends StatelessWidget {
                       fontFamily: 'Montserrat',
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  const ListBarangBekasCard(
+                  SizedBox(height: 10),
+                  ListSampahDaurUlangCard(
                     isCheckPage: true,
                   ),
-                  const SizedBox(height: 10),
-                  const ListBarangBekasCard(
+                  SizedBox(height: 10),
+                  ListSampahDaurUlangCard(
                     isCheckPage: true,
                   ),
-                  const SizedBox(height: 15),
-                  const Text(
+                  SizedBox(height: 15),
+                  Text(
                     'List Barang Bekas',
                     style: TextStyle(
                       fontSize: 18,
@@ -165,11 +165,11 @@ class HistoryDetailPage extends StatelessWidget {
                       fontFamily: 'Montserrat',
                     ),
                   ),
-                  const SizedBox(height: 5),
-                  CardDataBarangComponent.listBarangBekas(isCheckedPage: true),
-                  const SizedBox(height: 10),
-                  CardDataBarangComponent.listBarangBekas(isCheckedPage: true),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 5),
+                  ListBarangBekasCard(isCheckedPage: true),
+                  SizedBox(height: 10),
+                  ListBarangBekasCard(isCheckedPage: true),
+                  SizedBox(height: 10),
                 ],
               ),
             ),

@@ -6,16 +6,12 @@ import 'package:sadar_app/routes/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(const MaterialApp(
-    home: MyApp(),
-    debugShowCheckedModeBanner: false,
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -52,9 +48,11 @@ class _CheckAuthState extends State<CheckAuth> {
     var token = local.get('token');
     if (token != null) {
       if (mounted) {
-        setState(() {
-          isAuth = true;
-        });
+        setState(
+          () {
+            isAuth = true;
+          },
+        );
       }
     }
   }

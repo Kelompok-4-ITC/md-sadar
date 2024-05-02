@@ -147,8 +147,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _listButton(
-      {required String name, required String urlImage, required Widget page}) {
+  Widget _listButton({
+    required String name,
+    required String urlImage,
+    required Widget page,
+  }) {
     return Column(
       children: [
         Material(

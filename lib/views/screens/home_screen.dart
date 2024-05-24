@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sadar_app/models/barang_bekas_model.dart';
+import 'package:sadar_app/models/sampah_daur_ulang_model.dart';
 import 'package:sadar_app/views/pages/drop_off_page.dart';
 import 'package:sadar_app/views/pages/news_page.dart';
 import 'package:sadar_app/views/pages/pick_up_page.dart';
@@ -162,6 +164,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               onTap: () {
+                SampahDaurUlangModel.itemDaurUlang = [
+                  SampahDaurUlangModel(
+                    kategoriSampah: 'Pilih Kategori Sampah',
+                    detailSampah: '',
+                  ),
+                ];
+                BarangBekasModel.itemDaurUlang = [
+                  BarangBekasModel(
+                    namaBarang: '',
+                    hargaJual: 0,
+                    descBarang: '',
+                  ),
+                ];
                 Navigator.push(
                   context,
                   MaterialPageRoute(

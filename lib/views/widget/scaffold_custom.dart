@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sadar_app/models/barang_bekas_model.dart';
-import 'package:sadar_app/models/sampah_daur_ulang_model.dart';
 
 class CustomScaffold {
   static Widget defaultScaffold({
@@ -16,19 +14,6 @@ class CustomScaffold {
               leading: canBack
                   ? IconButton(
                       onPressed: () {
-                        SampahDaurUlangModel.itemDaurUlang = [
-                          SampahDaurUlangModel(
-                            kategoriSampah: 'Pilih Kategori Sampah',
-                            detailSampah: '',
-                          ),
-                        ];
-                        BarangBekasModel.itemDaurUlang = [
-                          BarangBekasModel(
-                            namaBarang: '',
-                            hargaJual: 0,
-                            descBarang: '',
-                          ),
-                        ];
                         Navigator.pop(context);
                       },
                       icon: const Icon(

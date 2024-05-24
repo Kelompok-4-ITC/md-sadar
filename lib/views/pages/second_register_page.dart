@@ -307,7 +307,7 @@ class __SecondRegisterFormState extends State<_SecondRegisterForm> {
     //Check Response
     if (status >= 200 && status < 300) {
       SharedPreferences local = await SharedPreferences.getInstance();
-      local.setString('token', json.encode(body['token']));
+      local.setString('token', body['token']);
       if (mounted) {
         Navigator.pushReplacementNamed(context, RouteNames.home);
       }

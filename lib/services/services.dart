@@ -10,7 +10,7 @@ class Services {
 
   _getToken() async {
     SharedPreferences local = await SharedPreferences.getInstance();
-    token = jsonDecode(local.getString('token')!)['token'];
+    token = local.getString('token')!;
   }
 
   auth(data, String apiURL) async {
@@ -24,6 +24,8 @@ class Services {
 
   _setHeaders() => {
         'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
       };
 
   getData(apiURL) async {
@@ -31,6 +33,16 @@ class Services {
     await _getToken();
     return await http.get(
       Uri.parse(fullUrl),
+      headers: _setHeaders(),
+    );
+  }
+
+  putData(data, String apiURL) async {
+    var fullUrl = _url + apiURL;
+    await _getToken();
+    return await http.put(
+      Uri.parse(fullUrl),
+      body: jsonEncode(data),
       headers: _setHeaders(),
     );
   }

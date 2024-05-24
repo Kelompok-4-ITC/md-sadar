@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:sadar_app/models/user_model.dart';
 import 'package:sadar_app/routes/route_name.dart';
+import 'package:sadar_app/services/services.dart';
+import 'package:sadar_app/views/pages/info_personal_page.dart';
 import 'dart:math' as math;
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -180,6 +185,35 @@ class ProfileScreen extends StatelessWidget {
                       context: context,
                       logoIcon: Icons.newspaper,
                       info: 'Informasi Personal',
+                      onTap: () async {
+                        var res = await Services().getData('/user/fetch-user');
+                        var body = json.decode(res.body);
+                        print(body);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => InfoPersonalPage(
+                              userData: UserModel(
+                                fullName: body['loggedUser']['fullName'] ?? '',
+                                userName: body['loggedUser']['userName'] ?? '',
+                                email: body['loggedUser']['email'] ?? '',
+                                noHP: body['loggedUser']['noHP'] ?? '',
+                                alamat: body['loggedUser']['alamat'] ?? '',
+                                jenisKelamin:
+                                    body['loggedUser']['jenisKelamin'] ?? '',
+                                tglLahir:
+                                    body['loggedUser']['tanggalLahir'] ?? '',
+                                tglGabung:
+                                    body['loggedUser']['tanggalGabung'] ?? '',
+                                fotoProfile:
+                                    body['loggedUser']['fotoProfile'] ?? '',
+                                role: body['loggedUser']['role']['namaRole'] ??
+                                    '',
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 15),
                     _listButton(
@@ -207,10 +241,18 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 15),
                     _listButton(
-                      context: context,
-                      logoIcon: Icons.logout,
-                      info: 'Logout',
-                    ),
+                        context: context,
+                        logoIcon: Icons.logout,
+                        info: 'Logout',
+                        onTap: () async {
+                          SharedPreferences local =
+                              await SharedPreferences.getInstance();
+                          local.remove('token');
+                          if (context.mounted) {
+                            Navigator.pushReplacementNamed(
+                                context, RouteNames.login);
+                          }
+                        }),
                   ],
                 ),
               ),
@@ -225,15 +267,10 @@ class ProfileScreen extends StatelessWidget {
     required BuildContext context,
     required IconData logoIcon,
     required String info,
+    Function()? onTap,
   }) {
     return GestureDetector(
-      onTap: () async {
-        SharedPreferences local = await SharedPreferences.getInstance();
-        local.remove('token');
-        if (context.mounted) {
-          Navigator.pushReplacementNamed(context, RouteNames.login);
-        }
-      },
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(

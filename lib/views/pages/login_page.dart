@@ -296,7 +296,7 @@ class __LoginFormState extends State<_LoginForm> {
     //Check Response
     if (status == 200) {
       SharedPreferences local = await SharedPreferences.getInstance();
-      local.setString('token', json.encode(body['token']));
+      local.setString('token', body['token']);
       if (mounted) {
         Navigator.pushReplacementNamed(context, RouteNames.home);
       }
